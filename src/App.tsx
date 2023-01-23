@@ -1,7 +1,12 @@
 import { Typography } from "@mui/material";
+import SearchBar from "./components/searchBar/SearchBar";
 
 function App() {
-  return <Typography variant="h1">Hello World !</Typography>;
+  return (
+    <>
+      <SearchBar />
+    </>
+  );
 }
 
 export default App;
