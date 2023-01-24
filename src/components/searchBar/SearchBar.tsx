@@ -1,3 +1,5 @@
+import { useDispatch } from "react-redux";
+import { addSearchHistory, fetchMovies } from "../../data/slices/apiSlice";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -7,6 +9,12 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { store } from "../../data/store";
+import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
+import { useSelector } from "react-redux";
+
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -51,9 +59,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchBar() {
+  const dispatch = useAppDispatch();
+  const moviesLoading = useSelector(
+    (state: any) => state.moviesApi.loadingStatus
+  );
+
+  const handleSearch = async (e: any) => {
+    await dispatch(
+      fetchMovies({
+        titleToFind: e.target.value,
+        page: 1,
+      } as MoviesSearchParams)
+    );
+    if (moviesLoading === "succeeded") {
+      dispatch(
+        addSearchHistory({
+          titleToFind: e.target.value,
+          page: 1,
+        } as MoviesSearchParams)
+      );
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "#0f171e" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -79,7 +109,7 @@ export default function SearchBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              onChange={(e) => console.log(e.target.value)}
+              onChange={(e) => handleSearch(e)}
             />
           </Search>
         </Toolbar>
