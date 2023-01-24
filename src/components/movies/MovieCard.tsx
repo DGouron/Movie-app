@@ -4,56 +4,37 @@ import { useTheme } from "@mui/material/styles";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
-import { Box, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
+import React from "react";
+import MovieModal from "./MovieModal";
 
 export default function MovieCard({ movie }: { movie: MovieSearchResult }) {
   const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Card
-      sx={{ display: "flex", flex: "1 1 17%", maxHeight: "200px" }}
+      sx={{
+        display: "flex",
+        flex: "0 1 20%",
+        maxHeight: "250px",
+        maxWidth: "200px",
+      }}
       raised={true}
     >
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <CardContent sx={{ flex: "25" }}>
-          <Typography component="div" variant="h5">
-            {movie.Title}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            color="text.secondary"
-            component="div"
-          >
-            {movie.Year}
-          </Typography>
-        </CardContent>
-        <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-          <IconButton aria-label="previous">
-            {theme.direction === "rtl" ? (
-              <SkipNextIcon />
-            ) : (
-              <SkipPreviousIcon />
-            )}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === "rtl" ? (
-              <SkipPreviousIcon />
-            ) : (
-              <SkipNextIcon />
-            )}
-          </IconButton>
-        </Box>
-      </Box>
       <CardMedia
         component="img"
-        sx={{ width: 151 }}
+        sx={{ width: "100%", height: "100%", objectFit: "cover" }}
         image={movie.Poster}
-        alt="Live from space album cover"
+        alt={movie.Title}
+        onClick={handleOpen}
+      />
+      <MovieModal
+        open={open}
+        handleClose={handleClose}
+        movieId={movie.imdbID}
       />
     </Card>
   );
