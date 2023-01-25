@@ -2,7 +2,9 @@ import { Pagination, Grid, Stack, PaginationItem } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addSearchHistory, fetchMovies } from "../../data/slices/apiSlice";
 import store from "../../data/store";
+import { MovieSearchResult } from "../../types/movieSearchResultType";
 import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
+import { MovieThumb } from "../../types/movieType";
 import SkeletonRow from "../loader/SkeletonRow";
 import MovieCard from "./MovieCard";
 
@@ -71,8 +73,8 @@ function MoviesList() {
             sx={{ boxShadow: 1 }}
             wrap={"wrap"}
           >
-            {moviesSearch?.map((movie: any) => (
-              <MovieCard movie={movie} key={movie.imdbID} />
+            {moviesSearch?.map((movie: MovieThumb) => (
+              <MovieCard movie={movie} key={movie.imdbID} dispatch={dispatch} />
             ))}
           </Grid>
         </>

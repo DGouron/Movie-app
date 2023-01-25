@@ -1,17 +1,22 @@
-import { MovieSearchResult } from "../../types/movieSearchResultType";
-import Card from "@mui/material/Card";
-import { useTheme } from "@mui/material/styles";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
 import React from "react";
+import { MovieThumb } from "../../types/movieType";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 import MovieModal from "./MovieModal";
+import { fetchMovieDetails } from "../../data/slices/apiSlice";
 
-export default function MovieCard({ movie }: { movie: MovieSearchResult }) {
-  const theme = useTheme();
+export default function MovieCard({
+  movie,
+  dispatch,
+}: {
+  movie: MovieThumb;
+  dispatch: any;
+}) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = async () => {
+    await dispatch(fetchMovieDetails(movie.imdbID));
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
 
   return (
