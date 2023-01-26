@@ -47,68 +47,79 @@ export default function MoviesList({
   };
 
   return (
-    <Stack
-      alignItems={"center"}
-      minHeight={"95vh"}
-      display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"space-between"}
-    >
-      <Typography variant="h5" component="h2" gutterBottom color={"#ffff"}>
-        Movies :{" "}
+    <section>
+      <Typography
+        variant="h5"
+        component="h2"
+        gutterBottom
+        color={"#ffff"}
+        padding={"10px"}
+      >
+        {moviesResult?.totalResults > 0
+          ? "Movies found (" + moviesResult.totalResults + ")"
+          : "Tell your wish in the search bar"}
       </Typography>
-      {moviesLoading === "loading" ? (
-        <SkeletonRow />
-      ) : moviesResult.totalResult === 0 || moviesResult.Response !== "True" ? (
-        <h1>{moviesResult.Error}</h1>
-      ) : (
-        <Container>
-          <Grid
-            container
-            justifyContent={"flex-start"}
-            padding={3}
-            alignItems={"flex-start"}
-            gap={3}
-            sx={{ boxShadow: 1 }}
-            wrap={"wrap"}
-          >
-            {moviesResult.Search?.map((movie: MovieThumb) => (
-              <MovieCard
-                movie={movie}
-                key={movie.imdbID}
-                dispatch={dispatch}
-                moviePicker={moviePicker}
+      <Stack
+        alignItems={"center"}
+        minHeight={"95vh"}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"space-between"}
+      >
+        {moviesLoading === "loading" ? (
+          <SkeletonRow />
+        ) : moviesResult.totalResults === 0 ||
+          moviesResult.Response !== "True" ? (
+          <h1>{moviesResult.Error}</h1>
+        ) : (
+          <Container fixed>
+            <Grid
+              container
+              justifyContent={"flex-start"}
+              padding={3}
+              alignItems={"flex-start"}
+              gap={3}
+              sx={{ boxShadow: 1 }}
+              wrap={"wrap"}
+            >
+              {moviesResult.Search?.map((movie: MovieThumb) => (
+                <MovieCard
+                  movie={movie}
+                  key={movie.imdbID}
+                  dispatch={dispatch}
+                  moviePicker={moviePicker}
+                />
+              ))}
+            </Grid>
+          </Container>
+        )}
+        <Pagination
+          count={Math.round(moviesResult.totalResults / 10)}
+          page={currentPage}
+          variant="outlined"
+          renderItem={(item) => {
+            return (
+              <PaginationItem
+                {...item}
+                sx={{
+                  color: "#fff",
+                  bgcolor: "#0f171e",
+                  borderColor: "#ffffff",
+                }}
               />
-            ))}
-          </Grid>
-        </Container>
-      )}
-      <Pagination
-        count={Math.round(moviesResult.totalResult / 10)}
-        page={currentPage}
-        variant="outlined"
-        renderItem={(item) => {
-          return (
-            <PaginationItem
-              {...item}
-              sx={{
-                color: "#fff",
-                bgcolor: "#0f171e",
-                borderColor: "#ffffff",
-              }}
-            />
-          );
-        }}
-        shape="rounded"
-        onChange={(event: React.ChangeEvent<unknown>, page: number) =>
-          handlePageChange(event, page)
-        }
-        color="primary"
-        size="large"
-        sx={{
-          margin: 3,
-        }}
-      />
-    </Stack>
+            );
+          }}
+          shape="rounded"
+          onChange={(event: React.ChangeEvent<unknown>, page: number) =>
+            handlePageChange(event, page)
+          }
+          color="primary"
+          size="large"
+          sx={{
+            margin: 3,
+          }}
+        />
+      </Stack>
+    </section>
   );
 }

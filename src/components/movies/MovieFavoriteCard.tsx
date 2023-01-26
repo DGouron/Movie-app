@@ -1,13 +1,23 @@
 import { MovieThumb } from "../../types/movieType";
 import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
 import MovieModal from "./MovieModal";
 import { fetchMovieDetails } from "../../data/slices/apiSlice";
 import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { setNeedToUpdateFavorites } from "../../data/slices/coreSlice";
+import Typography from "@mui/material/Typography";
 import { useState } from "react";
 
-export default function MovieCard({
+const cardStyle = {
+  display: "flex",
+  flex: "0 1 15%",
+  height: "60px",
+  textAlign: "center",
+  alignItems: "center",
+};
+
+const titleStyle = { p: 1, flex: "1 1 100%", textOverflow: "ellipsis" };
+
+export default function MovieFavoriteCard({
   movie,
   dispatch,
   moviePicker,
@@ -18,45 +28,27 @@ export default function MovieCard({
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = async () => {
-    dispatch(setNeedToUpdateFavorites(false));
     await dispatch(fetchMovieDetails(movie.imdbID));
     setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-
-  const addToFavorites = () => {
     moviePicker.pick(movie.Title);
     dispatch(setNeedToUpdateFavorites(true));
   };
+  const handleClose = () => setOpen(false);
 
   return (
-    <Card
-      sx={{
-        display: "flex",
-        flex: "0 1 20%",
-        maxHeight: "250px",
-        maxWidth: "200px",
-        minWidth: "200px",
-        minHeight: "250px",
-      }}
-      raised={true}
-      component={"article"}
-    >
-      <CardMedia
-        component="img"
-        sx={{ width: "100%", height: "100%", objectFit: "cover" }}
-        image={
-          movie.Poster && movie.Poster !== "N/A"
-            ? movie.Poster
-            : "https://via.placeholder.com/200x250"
-        }
-        alt={movie.Title}
+    <Card sx={cardStyle} raised={true} component={"article"}>
+      <Typography
+        variant="subtitle2"
+        component="h2"
+        sx={titleStyle}
         onClick={handleOpen}
-      />
+      >
+        {movie.Title}
+      </Typography>
       <MovieModal
         open={open}
         handleClose={handleClose}
-        movieId={movie.imdbID}
+        movieTitle={movie.Title}
       />
     </Card>
   );

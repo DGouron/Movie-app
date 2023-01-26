@@ -3,14 +3,16 @@ import {
   Fade,
   Box,
   Typography,
-  Card,
   CardContent,
   CardMedia,
 } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { fetchMovieDetails } from "../../data/slices/apiSlice";
+import {
+  fetchMovieDetails,
+  fetchMovieDetailsByTitle,
+} from "../../data/slices/apiSlice";
 import store from "../../data/store";
 
 export type AppDispatch = typeof store.dispatch;
@@ -24,25 +26,32 @@ const style = {
   width: 500,
   bgcolor: "background.paper",
   border: "2px solid #000",
+  borderRadius: "5px",
   boxShadow: 24,
-  p: 4,
+  p: 2,
 };
 
 function MovieModal({
   open,
   handleClose,
-  movieId,
+  movieId = "",
+  movieTitle = "",
 }: {
   open: boolean;
   handleClose: () => void;
-  movieId: string;
+  movieId?: string;
+  movieTitle?: string;
 }) {
   const dispatch = useAppDispatch();
   const movieDetails = useSelector(
     (state: any) => state.moviesApi.targetMovieDetails
   );
   useEffect(() => {
-    dispatch(fetchMovieDetails(movieId));
+    if (movieId === "unknown") {
+      dispatch(fetchMovieDetailsByTitle(movieTitle));
+    } else {
+      dispatch(fetchMovieDetails(movieId));
+    }
   }, [movieId]);
 
   return (
@@ -52,6 +61,7 @@ function MovieModal({
       open={open}
       onClose={handleClose}
       closeAfterTransition
+      component={"aside"}
     >
       <Fade in={open}>
         <Box sx={style}>
@@ -63,7 +73,12 @@ function MovieModal({
               padding: 1,
             }}
           >
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <CardContent sx={{ flex: "1 0 auto" }}>
                 <Typography component="div" variant="h5">
                   {movieDetails.Title}

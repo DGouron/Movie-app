@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { MovieSearchResult } from "../src/types/movieSearchResultType";
 import { MoviesSearchParams } from "../src/types/moviesSearchParamsType";
-import { Movie, MovieThumb } from "../src/types/movieType";
+import { Movie } from "../src/types/movieType";
 
 const movieDetailedSchema = z.object({
   Title: z.string(),
@@ -31,7 +31,8 @@ export class Omdb {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = "https://www.omdbapi.com/?apikey=23aaa32";
+    this.apiUrl = "https://www.omdbapi.com/?apikey=23aaa32"; // prod key
+    //this.apiUrl = "http://www.omdbapi.com/?apikey=e4dcc54f"; // dev key
   }
 
   public async searchMovies(
@@ -63,9 +64,11 @@ export class Omdb {
     }
   }
 
-  public async getMovieDetails(imdbId: string): Promise<Movie> {
+  public async getMovieDetails(imdbId: string, type: string): Promise<Movie> {
     try {
-      const response = await fetch(`${this.apiUrl}&i=${imdbId}&plot=short`);
+      const response = await fetch(
+        `${this.apiUrl}&${type}=${imdbId}&plot=short`
+      );
       if (!response.ok) {
         throw new Error(response.statusText);
       }

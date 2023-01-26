@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { LocalStorageMoviePickRepo } from "../../MoviePicker/LocalStorageMoviePickRepo";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Stack, Typography } from "@mui/material";
-import MovieCard from "../movies/MovieCard";
+import { Container, Grid, Stack, Typography } from "@mui/material";
 import store from "../../data/store";
 import { MovieThumb } from "../../types/movieType";
+import MovieFavoriteCard from "../movies/MovieFavoriteCard";
 
 interface FavoriteProps {
   moviePicker: MoviePicker;
@@ -34,30 +34,50 @@ function Favorite({ moviePicker, moviePickRepo }: FavoriteProps) {
     }
   }, [needUpdate]);
 
-  return (
-    <>
-      <Typography variant="h5" component="h2" gutterBottom color={"#ffff"}>
-        Favorite Movies :{" "}
-      </Typography>
-      <Stack direction="row" spacing={2} flexWrap={"wrap"} gap={"10px"}>
-        {picks.sort().map((movieTitle) => {
-          const movieThumb = {
-            Title: movieTitle,
-            Poster: "",
-            imdbID: "",
-          } as MovieThumb;
+  useEffect(() => {
+    updatePicks();
+  }, []);
 
-          return (
-            <MovieCard
-              movie={movieThumb}
-              dispatch={dispatch}
-              moviePicker={moviePicker}
-              key={movieTitle}
-            />
-          );
-        })}
-      </Stack>
-    </>
+  return (
+    <section>
+      <Typography
+        variant="h5"
+        component="h2"
+        gutterBottom
+        color={"#ffff"}
+        padding={"10px"}
+      >
+        Your list {picks.length > 0 ? "" : "is empty"}
+      </Typography>
+      <Container fixed>
+        <Grid
+          container
+          justifyContent={"flex-start"}
+          padding={3}
+          alignItems={"flex-start"}
+          gap={3}
+          sx={{ boxShadow: 1 }}
+          wrap={"wrap"}
+        >
+          {picks.sort().map((movieTitle) => {
+            const movieThumb = {
+              Title: movieTitle,
+              Poster: "",
+              imdbID: "unknown",
+            } as MovieThumb;
+
+            return (
+              <MovieFavoriteCard
+                movie={movieThumb}
+                dispatch={dispatch}
+                moviePicker={moviePicker}
+                key={movieTitle}
+              />
+            );
+          })}
+        </Grid>
+      </Container>
+    </section>
   );
 }
 

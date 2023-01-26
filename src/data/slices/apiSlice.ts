@@ -17,7 +17,14 @@ export const fetchMovies = createAsyncThunk(
 export const fetchMovieDetails = createAsyncThunk(
   "moviesApi/fetchMovieDetails",
   async (imdbId: string) => {
-    const data = await omdb.getMovieDetails(imdbId);
+    const data = await omdb.getMovieDetails(imdbId, "i");
+    return data;
+  }
+);
+export const fetchMovieDetailsByTitle = createAsyncThunk(
+  "moviesApi/fetchMovieDetailsByTitle",
+  async (imdbId: string) => {
+    const data = await omdb.getMovieDetails(imdbId, "t");
     return data;
   }
 );
@@ -63,6 +70,17 @@ const apiSlice = createSlice({
       state.targetMovieDetails = action.payload;
     });
     builder.addCase(fetchMovieDetails.rejected, (state, action) => {
+      state.loadingDetailsStatus = "failed";
+      state.fetchMovieDetailsError = action.error.message;
+    });
+    builder.addCase(fetchMovieDetailsByTitle.pending, (state, action) => {
+      state.loadingDetailsStatus = "loading";
+    });
+    builder.addCase(fetchMovieDetailsByTitle.fulfilled, (state, action) => {
+      state.loadingDetailsStatus = "succeeded";
+      state.targetMovieDetails = action.payload;
+    });
+    builder.addCase(fetchMovieDetailsByTitle.rejected, (state, action) => {
       state.loadingDetailsStatus = "failed";
       state.fetchMovieDetailsError = action.error.message;
     });
