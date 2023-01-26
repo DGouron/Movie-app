@@ -1,7 +1,15 @@
-import { Pagination, Grid, Stack, PaginationItem } from "@mui/material";
+import {
+  Pagination,
+  Grid,
+  Stack,
+  PaginationItem,
+  Container,
+  Typography,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovies, setCurrentPage } from "../../data/slices/apiSlice";
 import store from "../../data/store";
+import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
 import { MovieThumb } from "../../types/movieType";
 import SkeletonRow from "../loader/SkeletonRow";
@@ -10,7 +18,11 @@ import MovieCard from "./MovieCard";
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
-function MoviesList() {
+export default function MoviesList({
+  moviePicker,
+}: {
+  moviePicker: MoviePicker;
+}) {
   const dispatch = useAppDispatch();
 
   const moviesResult = useSelector((state: any) => state.moviesApi.movies);
@@ -37,17 +49,20 @@ function MoviesList() {
   return (
     <Stack
       alignItems={"center"}
-      minHeight={"90vh"}
+      minHeight={"95vh"}
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"space-between"}
     >
+      <Typography variant="h5" component="h2" gutterBottom color={"#ffff"}>
+        Movies :{" "}
+      </Typography>
       {moviesLoading === "loading" ? (
         <SkeletonRow />
       ) : moviesResult.totalResult === 0 || moviesResult.Response !== "True" ? (
         <h1>{moviesResult.Error}</h1>
       ) : (
-        <>
+        <Container>
           <Grid
             container
             justifyContent={"flex-start"}
@@ -58,10 +73,15 @@ function MoviesList() {
             wrap={"wrap"}
           >
             {moviesResult.Search?.map((movie: MovieThumb) => (
-              <MovieCard movie={movie} key={movie.imdbID} dispatch={dispatch} />
+              <MovieCard
+                movie={movie}
+                key={movie.imdbID}
+                dispatch={dispatch}
+                moviePicker={moviePicker}
+              />
             ))}
           </Grid>
-        </>
+        </Container>
       )}
       <Pagination
         count={Math.round(moviesResult.totalResult / 10)}

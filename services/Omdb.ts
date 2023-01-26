@@ -31,14 +31,13 @@ export class Omdb {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = "http://www.omdbapi.com/?apikey=23aaa32";
+    this.apiUrl = "https://www.omdbapi.com/?apikey=23aaa32";
   }
 
   public async searchMovies(
     moviesSearchParams: MoviesSearchParams
   ): Promise<MovieSearchResult> {
     try {
-      console.log(moviesSearchParams.page);
       const response = await fetch(
         `${this.apiUrl}&s=${moviesSearchParams.titleToFind}&page=${moviesSearchParams.page}&type=movie`
       );
