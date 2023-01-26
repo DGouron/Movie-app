@@ -1,5 +1,9 @@
 import { useDispatch } from "react-redux";
-import { addSearchHistory, fetchMovies } from "../../data/slices/apiSlice";
+import {
+  fetchMovies,
+  setCurrentPage,
+  setCurrentSearch,
+} from "../../data/slices/apiSlice";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -65,20 +69,14 @@ export default function SearchBar() {
   );
 
   const handleSearch = async (e: any) => {
+    dispatch(setCurrentPage(1));
+    dispatch(setCurrentSearch(e.target.value));
     await dispatch(
       fetchMovies({
         titleToFind: e.target.value,
         page: 1,
       } as MoviesSearchParams)
     );
-    if (moviesLoading === "succeeded") {
-      dispatch(
-        addSearchHistory({
-          titleToFind: e.target.value,
-          page: 1,
-        } as MoviesSearchParams)
-      );
-    }
   };
 
   return (

@@ -28,16 +28,19 @@ const apiSlice = createSlice({
     movies: {} as MovieSearchResult,
     loadingStatus: "idle",
     error: "" as string | undefined,
-    searchHistory: [] as MoviesSearchParams[],
     targetMovieDetails: {} as Movie,
     fetchMovieDetailsError: "" as string | undefined,
     loadingDetailsStatus: "idle",
+    currentSearch: "" as string | undefined,
+    currentPage: 1,
   },
 
   reducers: {
-    addSearchHistory: (state, action) => {
-      console.log("addSearchHistory", action.payload);
-      state.searchHistory.push(action.payload);
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+    setCurrentSearch: (state, action) => {
+      state.currentSearch = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -66,5 +69,5 @@ const apiSlice = createSlice({
   },
 });
 
-export const { addSearchHistory } = apiSlice.actions;
+export const { setCurrentPage, setCurrentSearch } = apiSlice.actions;
 export default apiSlice.reducer;

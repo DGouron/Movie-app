@@ -1,8 +1,7 @@
 import { Pagination, Grid, Stack, PaginationItem } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addSearchHistory, fetchMovies } from "../../data/slices/apiSlice";
+import { fetchMovies, setCurrentPage } from "../../data/slices/apiSlice";
 import store from "../../data/store";
-import { MovieSearchResult } from "../../types/movieSearchResultType";
 import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
 import { MovieThumb } from "../../types/movieType";
 import SkeletonRow from "../loader/SkeletonRow";
@@ -14,40 +13,25 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 function MoviesList() {
   const dispatch = useAppDispatch();
 
-  const moviesSearch = useSelector(
-    (state: any) => state.moviesApi.movies.Search
-  );
-  const moviesSearchResponse = useSelector(
-    (state: any) => state.moviesApi.movies.Response
-  );
-  const moviesTotalResults = useSelector(
-    (state: any) => state.moviesApi.movies.totalResults
-  );
-  const moviesFetchingError = useSelector(
-    (state: any) => state.moviesApi.movies.Error
-  );
+  const moviesResult = useSelector((state: any) => state.moviesApi.movies);
   const moviesLoading = useSelector(
     (state: any) => state.moviesApi.loadingStatus
   );
-  const searchHistory = useSelector(
-    (state: any) => state.moviesApi.searchHistory
+  const currentPage = useSelector((state: any) => state.moviesApi.currentPage);
+  const currentSearch = useSelector(
+    (state: any) => state.moviesApi.currentSearch
   );
 
   const handlePageChange = async (
     event: React.ChangeEvent<unknown>,
     page: number
   ) => {
-    const lastRequest: MoviesSearchParams =
-      searchHistory[searchHistory.length - 1];
-    console.log("NEW PAGE", page);
     const newSearchRequest = {
-      ...lastRequest,
+      titleToFind: currentSearch,
       page: page,
     } as MoviesSearchParams;
+    dispatch(setCurrentPage(page));
     await dispatch(fetchMovies(newSearchRequest));
-    if (moviesLoading === "succeeded") {
-      dispatch(addSearchHistory(newSearchRequest));
-    }
   };
 
   return (
@@ -60,8 +44,8 @@ function MoviesList() {
     >
       {moviesLoading === "loading" ? (
         <SkeletonRow />
-      ) : moviesTotalResults === 0 || moviesSearchResponse !== "True" ? (
-        <h1>{moviesFetchingError}</h1>
+      ) : moviesResult.totalResult === 0 || moviesResult.Response !== "True" ? (
+        <h1>{moviesResult.Error}</h1>
       ) : (
         <>
           <Grid
@@ -73,14 +57,15 @@ function MoviesList() {
             sx={{ boxShadow: 1 }}
             wrap={"wrap"}
           >
-            {moviesSearch?.map((movie: MovieThumb) => (
+            {moviesResult.Search?.map((movie: MovieThumb) => (
               <MovieCard movie={movie} key={movie.imdbID} dispatch={dispatch} />
             ))}
           </Grid>
         </>
       )}
       <Pagination
-        count={Math.round(moviesTotalResults / 10)}
+        count={Math.round(moviesResult.totalResult / 10)}
+        page={currentPage}
         variant="outlined"
         renderItem={(item) => {
           return (
@@ -107,5 +92,3 @@ function MoviesList() {
     </Stack>
   );
 }
-
-export default MoviesList;

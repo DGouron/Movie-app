@@ -31,7 +31,7 @@ export class Omdb {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = "https://www.omdbapi.com/?apikey=23aaa32";
+    this.apiUrl = "http://www.omdbapi.com/?apikey=23aaa32";
   }
 
   public async searchMovies(
