@@ -13,6 +13,7 @@ import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
 import { MovieThumb } from "../../types/movieType";
 import SkeletonRow from "../loader/SkeletonRow";
+import { mainTitleStyle } from "./cardStyle";
 import MovieCard from "./MovieCard";
 
 export type AppDispatch = typeof store.dispatch;
@@ -54,6 +55,7 @@ export default function MoviesList({
         gutterBottom
         color={"#ffff"}
         padding={"10px"}
+        sx={mainTitleStyle}
       >
         {moviesResult?.totalResults > 0
           ? "Movies found (" + moviesResult.totalResults + ")"

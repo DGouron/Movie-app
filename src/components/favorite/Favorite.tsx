@@ -6,6 +6,7 @@ import { Container, Grid, Stack, Typography } from "@mui/material";
 import store from "../../data/store";
 import { MovieThumb } from "../../types/movieType";
 import MovieFavoriteCard from "../movies/MovieFavoriteCard";
+import { mainTitleStyle } from "../movies/cardStyle";
 
 interface FavoriteProps {
   moviePicker: MoviePicker;
@@ -45,6 +46,7 @@ function Favorite({ moviePicker, moviePickRepo }: FavoriteProps) {
         gutterBottom
         color={"#ffff"}
         padding={"10px"}
+        sx={mainTitleStyle}
       >
         Your movies tier list {picks.length > 0 ? "" : "is empty"}
       </Typography>

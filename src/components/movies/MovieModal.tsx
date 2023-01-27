@@ -16,24 +16,10 @@ import {
 import store from "../../data/store";
 import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import AddToFavoritesButton from "../favorite/AddToFavoriteButton";
+import { modalBlockStyle } from "./cardStyle";
 
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  maxWidth: "90vw",
-  maxHeight: "90vh",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  borderRadius: "5px",
-  boxShadow: 24,
-  p: 2,
-};
 
 function MovieModal({
   open,
@@ -70,7 +56,7 @@ function MovieModal({
       component={"aside"}
     >
       <Fade in={open}>
-        <Box sx={style}>
+        <Box sx={modalBlockStyle}>
           <Box
             sx={{
               display: "flex",
