@@ -5,6 +5,7 @@ import {
   PaginationItem,
   Container,
   Typography,
+  Alert,
 } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,10 +87,10 @@ export default function MoviesList({
           <SkeletonRow />
         ) : parseInt(moviesResult?.totalResults) === 0 ||
           moviesResult.Response !== "True" ? (
-          <h1>
+          <Alert variant="filled" severity="warning">
             No movies (or too much) found for your search. Try again with
             another title or more letters.
-          </h1>
+          </Alert>
         ) : (
           <Container fixed>
             <Grid container sx={movieListGridStyle}>
