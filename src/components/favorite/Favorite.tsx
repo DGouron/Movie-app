@@ -51,7 +51,7 @@ function Favorite({ moviePicker, moviePickRepo }: FavoriteProps) {
       <Container fixed>
         <Grid
           container
-          justifyContent={"space-between"}
+          justifyContent={"flex-start"}
           padding={3}
           alignItems={"flex-start"}
           gap={3}
