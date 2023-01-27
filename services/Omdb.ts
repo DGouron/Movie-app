@@ -3,6 +3,8 @@ import { MovieSearchResult } from "../src/types/movieSearchResultType";
 import { MoviesSearchParams } from "../src/types/moviesSearchParamsType";
 import { Movie } from "../src/types/movieType";
 
+const prodApiKey = (import.meta.env.VITE_OMDB_API_KEY_PROD as string) || "";
+
 const movieDetailedSchema = z.object({
   Title: z.string(),
   Year: z.string(),
@@ -31,8 +33,7 @@ export class Omdb {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = "https://www.omdbapi.com/?apikey=23aaa32"; // prod key
-    //this.apiUrl = "http://www.omdbapi.com/?apikey=e4dcc54f"; // dev key
+    this.apiUrl = "https://www.omdbapi.com/?apikey=" + prodApiKey; // prod key
   }
 
   public async searchMovies(
