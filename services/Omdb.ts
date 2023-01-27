@@ -60,7 +60,6 @@ export class Omdb {
       } as MovieSearchResult;
       return movieSearchResult;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
