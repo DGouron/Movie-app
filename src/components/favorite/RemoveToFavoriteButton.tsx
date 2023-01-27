@@ -9,7 +9,6 @@ import { setNeedToUpdateFavorites } from "../../data/slices/coreSlice";
 import { useState } from "react";
 import ErrorAlert from "../alert/ErrorAlert";
 import SuccessAlert from "../alert/SuccessAlert";
-import RemoveToFavoritesButton from "./RemoveToFavoriteButton";
 
 const iconStyle = {
   fontSize: 60,
@@ -22,7 +21,7 @@ const iconStyle = {
     boxShadow: "0 0 10px 0 #000000",
   },
 };
-export default function AddToFavoritesButton({
+export default function RemoveToFavoritesButton({
   moviePicker,
   movieTitle,
   dispatch,
@@ -38,25 +37,14 @@ export default function AddToFavoritesButton({
   const handleClick = async () => {
     await dispatch(setNeedToUpdateFavorites(false));
     await moviePicker
-      .pick(movieTitle)
+      .remove(movieTitle)
       .then(() => {
-        setAlertMessage("This movie has been added to your list");
+        setAlertMessage("Movie removed from the list");
         setOpenSuccessAlert(true);
       })
-      .catch((error) => {
-        if (error instanceof MoviePickAlreadyExistError) {
-          setAlertMessage("This movie is already in your list");
-          setOpenErrorAlert(true);
-
-          return;
-        } else {
-          setAlertMessage(
-            "An error occured while adding this movie to your list"
-          );
-          setOpenErrorAlert(true);
-
-          return;
-        }
+      .catch((error: any) => {
+        setAlertMessage(error);
+        setOpenErrorAlert(true);
       });
 
     dispatch(setNeedToUpdateFavorites(true));
@@ -77,27 +65,23 @@ export default function AddToFavoritesButton({
         },
       }}
     >
-      <Tooltip title="Add to your list" placement="top">
-        <Icon sx={iconStyle} color="action" onClick={handleClick}>
-          add_circle
-        </Icon>
+      <Tooltip title="Remove of the list" placement="top">
+        <Box sx={{ width: "100%" }}>
+          <Button onClick={handleClick}>Remove it ?</Button>
+          <Collapse in={openErrorAlert}>
+            <ErrorAlert
+              message={alertMessage}
+              closeFunction={closeErrorAlert}
+            />
+          </Collapse>
+          <Collapse in={openSuccessAlert}>
+            <SuccessAlert
+              message={alertMessage}
+              closeFunction={closeSuccessAlert}
+            />
+          </Collapse>
+        </Box>
       </Tooltip>
-      <Box sx={{ width: "100%" }}>
-        <Collapse in={openErrorAlert}>
-          <ErrorAlert message={alertMessage} closeFunction={closeErrorAlert} />
-          <RemoveToFavoritesButton
-            moviePicker={moviePicker}
-            movieTitle={movieTitle}
-            dispatch={dispatch}
-          />
-        </Collapse>
-        <Collapse in={openSuccessAlert}>
-          <SuccessAlert
-            message={alertMessage}
-            closeFunction={closeSuccessAlert}
-          />
-        </Collapse>
-      </Box>
     </Box>
   );
 }

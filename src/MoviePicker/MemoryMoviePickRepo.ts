@@ -38,4 +38,13 @@ export class MemoryMoviePickRepo implements MoviePickRepo {
       this.byFirstLetter.set([...title][0].toUpperCase(), title);
     }
   }
+
+  /**
+   *
+   */
+  async remove(title: string) {
+    if (title.length) {
+      this.byFirstLetter.delete([...title][0].toUpperCase());
+    }
+  }
 }

@@ -30,4 +30,11 @@ export class MoviePicker {
     }
     await this.repo.put(title);
   }
+
+  async remove(title: string) {
+    if (!title) {
+      throw new EmptyMovieTitleError();
+    }
+    await this.repo.remove(title);
+  }
 }

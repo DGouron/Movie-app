@@ -22,4 +22,11 @@ export class LocalStorageMoviePickRepo implements MoviePickRepo {
       localStorage.setItem(firstLetter, title);
     }
   }
+
+  async remove(title: string): Promise<void> {
+    const firstLetter = title[0].toUpperCase();
+    if (title) {
+      localStorage.removeItem(firstLetter);
+    }
+  }
 }
