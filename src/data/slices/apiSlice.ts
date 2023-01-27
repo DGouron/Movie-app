@@ -10,6 +10,9 @@ export const fetchMovies = createAsyncThunk(
   "moviesApi/fetchMovies",
   async (moviesSearchParams: MoviesSearchParams) => {
     const data = await omdb.searchMovies(moviesSearchParams);
+    if (data.Response === "False") {
+      throw new Error("No movies found");
+    }
     return data;
   }
 );
@@ -49,6 +52,11 @@ const apiSlice = createSlice({
     setCurrentSearch: (state, action) => {
       state.currentSearch = action.payload;
     },
+    clearSearchData: (state) => {
+      state.movies = {} as MovieSearchResult;
+      state.currentSearch = "" as string | undefined;
+      state.currentPage = 1;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchMovies.pending, (state, action) => {
@@ -87,5 +95,6 @@ const apiSlice = createSlice({
   },
 });
 
-export const { setCurrentPage, setCurrentSearch } = apiSlice.actions;
+export const { setCurrentPage, setCurrentSearch, clearSearchData } =
+  apiSlice.actions;
 export default apiSlice.reducer;

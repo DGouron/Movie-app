@@ -6,10 +6,16 @@ import {
   Container,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMovies, setCurrentPage } from "../../data/slices/apiSlice";
+import {
+  clearSearchData,
+  fetchMovies,
+  setCurrentPage,
+} from "../../data/slices/apiSlice";
 import store from "../../data/store";
 import { MoviePicker } from "../../MoviePicker/MoviePicker";
+import { MovieSearchResult } from "../../types/movieSearchResultType";
 import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
 import { MovieThumb } from "../../types/movieType";
 import SkeletonRow from "../loader/SkeletonRow";
@@ -26,7 +32,9 @@ export default function MoviesList({
 }) {
   const dispatch = useAppDispatch();
 
-  const moviesResult = useSelector((state: any) => state.moviesApi.movies);
+  const moviesResult: MovieSearchResult = useSelector(
+    (state: any) => state.moviesApi.movies
+  );
   const moviesLoading = useSelector(
     (state: any) => state.moviesApi.loadingStatus
   );
@@ -47,6 +55,12 @@ export default function MoviesList({
     await dispatch(fetchMovies(newSearchRequest));
   };
 
+  useEffect(() => {
+    if (moviesLoading !== "succeeded") {
+      dispatch(clearSearchData());
+    }
+  }, [moviesLoading]);
+
   return (
     <section>
       <Typography
@@ -57,7 +71,7 @@ export default function MoviesList({
         padding={"10px"}
         sx={mainTitleStyle}
       >
-        {moviesResult?.totalResults > 0
+        {parseInt(moviesResult?.totalResults) > 0
           ? "Movies found (" + moviesResult.totalResults + ")"
           : "What movie do you want ? Tell your wish in the search bar"}
       </Typography>
@@ -70,9 +84,12 @@ export default function MoviesList({
       >
         {moviesLoading === "loading" ? (
           <SkeletonRow />
-        ) : moviesResult.totalResults === 0 ||
+        ) : parseInt(moviesResult?.totalResults) === 0 ||
           moviesResult.Response !== "True" ? (
-          <h1>{moviesResult.Error}</h1>
+          <h1>
+            No movies (or too much) found for your search. Try again with
+            another title or more letters.
+          </h1>
         ) : (
           <Container fixed>
             <Grid container sx={movieListGridStyle}>
@@ -88,7 +105,7 @@ export default function MoviesList({
           </Container>
         )}
         <Pagination
-          count={Math.round(moviesResult.totalResults / 10)}
+          count={Math.round(parseInt(moviesResult?.totalResults) / 10)}
           page={currentPage}
           variant="outlined"
           renderItem={(item) => {

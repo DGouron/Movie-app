@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import {
+  clearSearchData,
   fetchMovies,
   setCurrentPage,
   setCurrentSearch,
@@ -15,7 +16,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { store } from "../../data/store";
 import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
-import { useSelector } from "react-redux";
 
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -64,9 +64,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchBar() {
   const dispatch = useAppDispatch();
-  const moviesLoading = useSelector(
-    (state: any) => state.moviesApi.loadingStatus
-  );
 
   const handleSearch = async (e: any) => {
     dispatch(setCurrentPage(1));
@@ -76,7 +73,9 @@ export default function SearchBar() {
         titleToFind: e.target.value,
         page: 1,
       } as MoviesSearchParams)
-    );
+    ).catch((err) => {
+      dispatch(clearSearchData());
+    });
   };
 
   return (
@@ -98,7 +97,7 @@ export default function SearchBar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Movie App
+            Movies Tier List
           </Typography>
           <Search>
             <SearchIconWrapper>
