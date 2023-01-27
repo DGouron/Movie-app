@@ -6,6 +6,7 @@ import { fetchMovieDetails } from "../../data/slices/apiSlice";
 import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { setNeedToUpdateFavorites } from "../../data/slices/coreSlice";
 import { useState } from "react";
+import { regularCardMediaStyle, regularCardStyle } from "./cardStyle";
 
 export default function MovieCard({
   movie,
@@ -30,25 +31,10 @@ export default function MovieCard({
   };
 
   return (
-    <Card
-      sx={{
-        display: "flex",
-        flex: "0 1 20%",
-        maxHeight: "250px",
-        maxWidth: "200px",
-        minWidth: "200px",
-        minHeight: "250px",
-        cursor: "pointer",
-        "&:hover": {
-          boxShadow: "0 0 10px 0 #000000",
-        },
-      }}
-      raised={true}
-      component={"article"}
-    >
+    <Card sx={regularCardStyle} raised={true} component={"article"}>
       <CardMedia
         component="img"
-        sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+        sx={regularCardMediaStyle}
         image={
           movie.Poster && movie.Poster !== "N/A"
             ? movie.Poster

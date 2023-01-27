@@ -1,29 +1,12 @@
 import { MovieThumb } from "../../types/movieType";
 import Card from "@mui/material/Card";
 import MovieModal from "./MovieModal";
-import {
-  fetchMovieDetails,
-  fetchMovieDetailsByTitle,
-} from "../../data/slices/apiSlice";
+import { fetchMovieDetailsByTitle } from "../../data/slices/apiSlice";
 import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { setNeedToUpdateFavorites } from "../../data/slices/coreSlice";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-
-const cardStyle = {
-  display: "flex",
-  flex: "0 1 14%",
-  height: "60px",
-  textAlign: "center",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  "&:hover": {
-    boxShadow: "0 0 10px 0 #000000",
-  },
-};
-
-const titleStyle = { p: 1, flex: "1 1 100%", textOverflow: "ellipsis" };
+import { favoriteCardStyle, titleStyle } from "./cardStyle";
 
 export default function MovieFavoriteCard({
   movie,
@@ -43,7 +26,7 @@ export default function MovieFavoriteCard({
   const handleClose = () => setOpen(false);
 
   return (
-    <Card sx={cardStyle} raised={true} component={"article"}>
+    <Card sx={favoriteCardStyle} raised={true} component={"article"}>
       <Typography
         variant="subtitle2"
         component="h2"

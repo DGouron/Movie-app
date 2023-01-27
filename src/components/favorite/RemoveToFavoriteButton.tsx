@@ -1,6 +1,6 @@
 import * as React from "react";
 import Icon from "@mui/material/Icon";
-import { Box, Button, Collapse, Tooltip } from "@mui/material";
+import { Box, Button, Collapse, Stack, Tooltip } from "@mui/material";
 import {
   MoviePickAlreadyExistError,
   MoviePicker,
@@ -67,7 +67,10 @@ export default function RemoveToFavoritesButton({
     >
       <Tooltip title="Remove of the list" placement="top">
         <Box sx={{ width: "100%" }}>
-          <Button onClick={handleClick}>Remove it ?</Button>
+          <Stack direction="row" spacing={0} alignItems="center">
+            <Icon color="error">delete_forever</Icon>
+            <Button onClick={handleClick}>Remove it ?</Button>
+          </Stack>
           <Collapse in={openErrorAlert}>
             <ErrorAlert
               message={alertMessage}

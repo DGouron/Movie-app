@@ -26,6 +26,8 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 500,
+  maxWidth: "90vw",
+  maxHeight: "90vh",
   bgcolor: "background.paper",
   border: "2px solid #000",
   borderRadius: "5px",
@@ -84,23 +86,40 @@ function MovieModal({
               }}
             >
               <CardContent sx={{ flex: "1 0 auto" }}>
-                <Typography component="div" variant="h5">
+                <Typography component="h2" variant="h5">
                   {movieDetails.Title}
                 </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="p"
+                >
                   {movieDetails.Year}
                 </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  component="p"
+                >
                   Genre : {movieDetails.Genre}
                 </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  component="p"
+                >
                   Director : {movieDetails.Director}
                 </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  component="p"
+                >
                   Actors : {movieDetails.Actors}
                 </Typography>
                 <Typography
-                  variant="h6"
+                  variant="body2"
+                  component="p"
                   color="text.secondary"
                   marginTop={"10px"}
                 >
