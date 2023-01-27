@@ -13,7 +13,7 @@ import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { MoviesSearchParams } from "../../types/moviesSearchParamsType";
 import { MovieThumb } from "../../types/movieType";
 import SkeletonRow from "../loader/SkeletonRow";
-import { mainTitleStyle } from "./cardStyle";
+import { mainTitleStyle, movieListGridStyle } from "./cardStyle";
 import MovieCard from "./MovieCard";
 
 export type AppDispatch = typeof store.dispatch;
@@ -75,15 +75,7 @@ export default function MoviesList({
           <h1>{moviesResult.Error}</h1>
         ) : (
           <Container fixed>
-            <Grid
-              container
-              justifyContent={"flex-start"}
-              padding={3}
-              alignItems={"flex-start"}
-              gap={3}
-              sx={{ boxShadow: 1 }}
-              wrap={"wrap"}
-            >
+            <Grid container sx={movieListGridStyle}>
               {moviesResult.Search?.map((movie: MovieThumb) => (
                 <MovieCard
                   movie={movie}

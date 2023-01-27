@@ -52,6 +52,14 @@ export const modalBlockStyle = {
   p: 2,
 };
 
+export const movieListGridStyle = {
+  boxShadow: 1,
+  justifyContent: "center",
+  gap: 3,
+  p: 3,
+  alignItems: "flex-start",
+  wrap: "wrap",
+};
 export const mainTitleStyle = {
   fontSize: "1.1rem",
   letterSpacing: "0.2rem",
