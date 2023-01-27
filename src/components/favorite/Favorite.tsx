@@ -25,7 +25,6 @@ function Favorite({ moviePicker, moviePickRepo }: FavoriteProps) {
 
   const updatePicks = async () => {
     const picks = await moviePickRepo.getAll();
-    console.log("updatePicks -> ", picks);
     setPicks(picks);
   };
   useEffect(() => {
@@ -47,16 +46,16 @@ function Favorite({ moviePicker, moviePickRepo }: FavoriteProps) {
         color={"#ffff"}
         padding={"10px"}
       >
-        Your list {picks.length > 0 ? "" : "is empty"}
+        Your movies tier list {picks.length > 0 ? "" : "is empty"}
       </Typography>
       <Container fixed>
         <Grid
           container
-          justifyContent={"flex-start"}
+          justifyContent={"space-between"}
           padding={3}
           alignItems={"flex-start"}
           gap={3}
-          sx={{ boxShadow: 1 }}
+          sx={{ boxShadow: 1, borderRadius: 1 }}
           wrap={"wrap"}
         >
           {picks.sort().map((movieTitle) => {

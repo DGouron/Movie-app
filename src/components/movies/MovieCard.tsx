@@ -38,6 +38,10 @@ export default function MovieCard({
         maxWidth: "200px",
         minWidth: "200px",
         minHeight: "250px",
+        cursor: "pointer",
+        "&:hover": {
+          boxShadow: "0 0 10px 0 #000000",
+        },
       }}
       raised={true}
       component={"article"}
@@ -57,6 +61,7 @@ export default function MovieCard({
         open={open}
         handleClose={handleClose}
         movieId={movie.imdbID}
+        moviePicker={moviePicker}
       />
     </Card>
   );

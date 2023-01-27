@@ -67,7 +67,9 @@ export class Omdb {
   public async getMovieDetails(imdbId: string, type: string): Promise<Movie> {
     try {
       const response = await fetch(
-        `${this.apiUrl}&${type}=${imdbId}&plot=short`
+        type === "id"
+          ? `${this.apiUrl}&i=${imdbId}&plot=short`
+          : `${this.apiUrl}&t=${imdbId}&plot=short`
       );
       if (!response.ok) {
         throw new Error(response.statusText);

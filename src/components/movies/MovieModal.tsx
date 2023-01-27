@@ -14,6 +14,8 @@ import {
   fetchMovieDetailsByTitle,
 } from "../../data/slices/apiSlice";
 import store from "../../data/store";
+import { MoviePicker } from "../../MoviePicker/MoviePicker";
+import AddToFavoritesButton from "../favorite/AddToFavoriteButton";
 
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -36,11 +38,13 @@ function MovieModal({
   handleClose,
   movieId = "",
   movieTitle = "",
+  moviePicker,
 }: {
   open: boolean;
   handleClose: () => void;
   movieId?: string;
   movieTitle?: string;
+  moviePicker: MoviePicker;
 }) {
   const dispatch = useAppDispatch();
   const movieDetails = useSelector(
@@ -104,12 +108,19 @@ function MovieModal({
                 </Typography>
               </CardContent>
             </Box>
-            <CardMedia
-              component="img"
-              sx={{ width: 151 }}
-              src={movieDetails.Poster}
-              alt={movieDetails.Title}
-            />
+            <Box>
+              <AddToFavoritesButton
+                moviePicker={moviePicker}
+                movieTitle={movieDetails.Title}
+                dispatch={dispatch}
+              />
+              <CardMedia
+                component="img"
+                sx={{ width: 151 }}
+                src={movieDetails.Poster}
+                alt={movieDetails.Title}
+              />
+            </Box>
           </Box>
         </Box>
       </Fade>

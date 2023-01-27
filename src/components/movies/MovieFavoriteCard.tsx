@@ -1,7 +1,10 @@
 import { MovieThumb } from "../../types/movieType";
 import Card from "@mui/material/Card";
 import MovieModal from "./MovieModal";
-import { fetchMovieDetails } from "../../data/slices/apiSlice";
+import {
+  fetchMovieDetails,
+  fetchMovieDetailsByTitle,
+} from "../../data/slices/apiSlice";
 import { MoviePicker } from "../../MoviePicker/MoviePicker";
 import { setNeedToUpdateFavorites } from "../../data/slices/coreSlice";
 import Typography from "@mui/material/Typography";
@@ -9,10 +12,15 @@ import { useState } from "react";
 
 const cardStyle = {
   display: "flex",
-  flex: "0 1 15%",
+  flex: "0 1 14%",
   height: "60px",
   textAlign: "center",
   alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  "&:hover": {
+    boxShadow: "0 0 10px 0 #000000",
+  },
 };
 
 const titleStyle = { p: 1, flex: "1 1 100%", textOverflow: "ellipsis" };
@@ -28,9 +36,8 @@ export default function MovieFavoriteCard({
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = async () => {
-    await dispatch(fetchMovieDetails(movie.imdbID));
+    await dispatch(fetchMovieDetailsByTitle(movie.Title));
     setOpen(true);
-    moviePicker.pick(movie.Title);
     dispatch(setNeedToUpdateFavorites(true));
   };
   const handleClose = () => setOpen(false);
@@ -49,6 +56,7 @@ export default function MovieFavoriteCard({
         open={open}
         handleClose={handleClose}
         movieTitle={movie.Title}
+        moviePicker={moviePicker}
       />
     </Card>
   );

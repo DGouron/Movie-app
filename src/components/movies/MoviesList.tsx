@@ -57,7 +57,7 @@ export default function MoviesList({
       >
         {moviesResult?.totalResults > 0
           ? "Movies found (" + moviesResult.totalResults + ")"
-          : "Tell your wish in the search bar"}
+          : "What movie do you want ? Tell your wish in the search bar"}
       </Typography>
       <Stack
         alignItems={"center"}

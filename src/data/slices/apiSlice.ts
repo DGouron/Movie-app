@@ -17,14 +17,14 @@ export const fetchMovies = createAsyncThunk(
 export const fetchMovieDetails = createAsyncThunk(
   "moviesApi/fetchMovieDetails",
   async (imdbId: string) => {
-    const data = await omdb.getMovieDetails(imdbId, "i");
+    const data = await omdb.getMovieDetails(imdbId, "id");
     return data;
   }
 );
 export const fetchMovieDetailsByTitle = createAsyncThunk(
   "moviesApi/fetchMovieDetailsByTitle",
   async (imdbId: string) => {
-    const data = await omdb.getMovieDetails(imdbId, "t");
+    const data = await omdb.getMovieDetails(imdbId, "title");
     return data;
   }
 );
