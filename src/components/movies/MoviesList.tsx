@@ -6,6 +6,7 @@ import {
   Container,
   Typography,
   Alert,
+  Button,
 } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -87,7 +88,15 @@ export default function MoviesList({
           <SkeletonRow />
         ) : parseInt(moviesResult?.totalResults) === 0 ||
           moviesResult.Response !== "True" ? (
-          <Alert variant="filled" severity="warning">
+          <Alert
+            variant="outlined"
+            severity="info"
+            action={
+              <Button size="medium" variant="contained" href="#search-bar">
+                Go To Search Bar
+              </Button>
+            }
+          >
             No movies (or too much) found for your search. Try again with
             another title or more letters.
           </Alert>
