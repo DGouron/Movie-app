@@ -57,7 +57,7 @@ export default function MoviesList({
   };
 
   useEffect(() => {
-    if (moviesLoading !== "succeeded") {
+    if (moviesLoading === "failed") {
       dispatch(clearSearchData());
     }
   }, [moviesLoading]);
